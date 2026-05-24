@@ -475,6 +475,18 @@ function renderSummary() {
   document.getElementById('pbar').style.width = '100%';
   document.getElementById('prog-label').textContent = 'Дууслаа!';
   window.scrollTo({ top: 0, behavior: 'smooth' });
+  submitToSheets(ans);
+}
+
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw_WJ4n2i_35eQZZ7-xjfeY3W6BixBxB8SG2b6kiv0HvGqPHPt4O_sw6guOJzi49ZT74Q/exec';
+
+function submitToSheets(data) {
+  fetch(SCRIPT_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  }).catch(err => console.log('Submit error:', err));
 }
 
 function restart() { cur = 0; ans = {}; xp = 0; multiSel = []; render(); }
