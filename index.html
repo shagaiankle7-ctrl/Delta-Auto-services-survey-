@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Delta Auto Service — Судалгаа</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:#f0f4ff;min-height:100vh;display:flex;align-items:flex-start;justify-content:center;padding:2rem 1rem 4rem;color:#111827}
+.wrap{width:100%;max-width:560px}
+.brand{display:flex;align-items:center;gap:14px;margin-bottom:2rem}
+.logo{width:52px;height:52px;background:#1a56db;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;color:#fff;box-shadow:0 4px 12px rgba(26,86,219,.3)}
+.brand h1{font-size:18px;font-weight:600}
+.brand p{font-size:13px;color:#4b5563;margin-top:2px}
+.prog-wrap{margin-bottom:1.5rem}
+.prog-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.prog-lbl{font-size:13px;color:#4b5563}
+.xp{background:#dcfce7;color:#16a34a;font-size:12px;font-weight:600;padding:3px 10px;border-radius:20px}
+.prog-track{width:100%;height:6px;background:#e5e7eb;border-radius:99px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,#3b82f6,#1a56db);border-radius:99px;transition:width .5s ease;width:0%}
+.card{background:#fff;border-radius:12px;box-shadow:0 1px 3px rgba(0,0,0,.08),0 4px 16px rgba(0,0,0,.06);padding:1.75rem;animation:up .3s ease}
+@keyframes up{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.sec-badge{display:inline-block;background:#e8f0fe;color:#1a56db;font-size:11px;font-weight:600;letter-spacing:.5px;padding:4px 12px;border-radius:20px;margin-bottom:1rem;text-transform:uppercase}
+.q-text{font-size:16px;font-weight:500;line-height:1.55;margin-bottom:1.25rem}
+.opts{display:flex;flex-direction:column;gap:8px}
+.opt{background:#f9fafb;border:1.5px solid #e5e7eb;border-radius:8px;padding:11px 16px;font-size:14px;color:#1f2937;cursor:pointer;text-align:left;transition:all .15s;width:100%;font-family:'Plus Jakarta Sans',sans-serif}
+.opt:hover{background:#e8f0fe;border-color:#3b82f6;color:#1a56db}
+.opt.sel{background:#e8f0fe;border-color:#1a56db;color:#1a56db;font-weight:500}
+.opt.msel{background:#dcfce7;border-color:#16a34a;color:#16a34a;font-weight:500}
+.lk-row{display:flex;gap:8px}
+.lk{flex:1;background:#f9fafb;border:1.5px solid #e5e7eb;border-radius:8px;padding:12px 4px;font-size:16px;font-weight:600;color:#374151;cursor:pointer;text-align:center;transition:all .15s;font-family:'Plus Jakarta Sans',sans-serif}
+.lk:hover{background:#e8f0fe;border-color:#3b82f6;color:#1a56db}
+.lk.sel{background:#1a56db;border-color:#1a56db;color:#fff}
+.lk-lbl{display:flex;justify-content:space-between;font-size:11px;color:#9ca3af;margin-top:6px}
+.nps-row{display:flex;gap:5px;flex-wrap:wrap}
+.nps{flex:1;min-width:38px;background:#f9fafb;border:1.5px solid #e5e7eb;border-radius:8px;padding:10px 2px;font-size:14px;font-weight:600;color:#374151;cursor:pointer;text-align:center;transition:all .15s;font-family:'Plus Jakarta Sans',sans-serif}
+.nps:hover{border-color:#3b82f6;background:#e8f0fe}
+.nps.sr{background:#fee2e2;border-color:#dc2626;color:#dc2626}
+.nps.sa{background:#fef3c7;border-color:#d97706;color:#d97706}
+.nps.sg{background:#dcfce7;border-color:#16a34a;color:#16a34a}
+.nps-lbl{display:flex;justify-content:space-between;font-size:11px;color:#9ca3af;margin-top:6px}
+input[type=text],textarea{width:100%;border:1.5px solid #e5e7eb;border-radius:8px;padding:12px 14px;font-size:14px;font-family:'Plus Jakarta Sans',sans-serif;color:#111827;background:#f9fafb;outline:none;transition:border .15s}
+textarea{min-height:90px;resize:vertical}
+input[type=text]:focus,textarea:focus{border-color:#1a56db;background:#fff}
+.acts{margin-top:1.25rem;display:flex;align-items:center;gap:10px}
+.btn-go{background:#1a56db;color:#fff;border:none;border-radius:8px;padding:12px 28px;font-size:15px;font-weight:600;cursor:pointer;transition:all .15s;box-shadow:0 2px 8px rgba(26,86,219,.25);font-family:'Plus Jakarta Sans',sans-serif}
+.btn-go:disabled{background:#e5e7eb;color:#9ca3af;box-shadow:none;cursor:not-allowed}
+.btn-go:not(:disabled):hover{background:#1648c0;transform:translateY(-1px)}
+.toast{position:fixed;bottom:28px;right:24px;background:#111827;color:#fff;border-radius:8px;padding:10px 18px;font-size:14px;font-weight:500;opacity:0;transform:translateY(8px);transition:all .25s;pointer-events:none;z-index:999}
+.toast.show{opacity:1;transform:translateY(0)}
+.sum-hdr{text-align:center;padding-bottom:1.25rem;border-bottom:1px solid #f3f4f6;margin-bottom:1.25rem}
+.trophy{font-size:48px;margin-bottom:8px}
+.sum-hdr h2{font-size:20px;font-weight:600}
+.sum-hdr p{font-size:14px;color:#4b5563;margin-top:4px}
+.sum-xp{display:inline-block;background:#dcfce7;color:#16a34a;font-size:15px;font-weight:600;padding:6px 18px;border-radius:20px;margin-top:10px}
+.sum-sec{margin-bottom:1rem}
+.sum-sec-ttl{font-size:11px;font-weight:600;color:#9ca3af;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.sum-row{display:flex;justify-content:space-between;align-items:flex-start;padding:8px 0;border-bottom:1px solid #f3f4f6;font-size:13px;gap:12px}
+.sum-row:last-child{border-bottom:none}
+.sum-k{color:#4b5563;flex-shrink:0}
+.sum-v{color:#111827;font-weight:500;text-align:right}
+.nps-tag{display:inline-block;padding:2px 10px;border-radius:20px;font-size:12px;font-weight:600}
+.np{background:#dcfce7;color:#16a34a}
+.na{background:#fef3c7;color:#d97706}
+.nd{background:#fee2e2;color:#dc2626}
+.avg{font-size:22px;font-weight:700;color:#1a56db}
+@media(max-width:480px){body{padding:1rem .75rem 3rem}.card{padding:1.25rem}.lk-row{gap:5px}.nps-row{gap:4px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="brand">
+    <div class="logo">Δ</div>
+    <div>
+      <h1>Delta Auto Service</h1>
+      <p>Хэрэглэгчийн судалгаа</p>
+    </div>
+  </div>
+  <div class="prog-wrap">
+    <div class="prog-meta">
+      <span class="prog-lbl" id="plbl">Эхлэл</span>
+      <span class="xp" id="xplbl">⭐ 0 оноо</span>
+    </div>
+    <div class="prog-track"><div class="prog-fill" id="pbar"></div></div>
+  </div>
+  <div id="body"></div>
+  <div class="toast" id="toast"></div>
+</div>
+
+<script>
+var Q = [
+  {id:"A1",sec:"A",sl:"А хэсэг — Ерөнхий мэдээлэл",q:"Таны нас?",t:"single",o:["18–24","25–34","35–44","45–54","55+"],xp:5},
+  {id:"A2",sec:"A",sl:"",q:"Хүйс?",t:"single",o:["Эрэгтэй","Эмэгтэй"],xp:5},
+  {id:"A3",sec:"A",sl:"",q:"Мэргэжил?",t:"text",xp:5},
+  {id:"A4",sec:"A",sl:"",q:"Одоогийн албан тушаал?",t:"text",xp:5},
+  {id:"A5",sec:"A",sl:"",q:"Утасны дугаар?",t:"text",xp:5},
+  {id:"A6",sec:"A",sl:"",q:"Сарын орлого (төгрөгөөр)?",t:"single",o:["1 сая хүртэл","1М–3М","3М–5М","5М–7М","7М+"],xp:5},
+  {id:"A7",sec:"A",sl:"",q:"Хаана амьдардаг вэ?",t:"single",o:["Баянзүрх","СБД","БГД","ХУД","Чингэлтэй","Сонгинохайрхан","Бусад"],xp:5},
+  {id:"A8",sec:"A",sl:"",q:"Машины марк?",t:"text",xp:5},
+  {id:"A9",sec:"A",sl:"",q:"Машины дугаар?",t:"text",xp:5},
+  {id:"A10",sec:"A",sl:"",q:"Машины насжилт?",t:"single",o:["0–3 жил","3–7 жил","7–15 жил","15+ жил"],xp:5},
+  {id:"B1",sec:"B",sl:"В хэсэг — Үйлчилгээний туршлага",q:"Та Дельта Авто Сервис ХХК-р үйлчлүүлж байсан уу?",t:"single",o:["Тийм","Үгүй"],xp:8},
+  {id:"B2",sec:"B",sl:"",q:"Та Дельта Авто Сервис ХХК-р хэр удаан үйлчлүүлж байгаа вэ?",t:"single",o:["1 л удаа","1–2 жил","3–5 жил","5+ жил"],xp:8},
+  {id:"B3",sec:"B",sl:"",q:"Манай талаар хэрхэн мэдсэн бэ? (Олон сонголт)",t:"multi",o:["Найз/танил","Google","Facebook","ТВ зар","Дэлгүүрийн гадна тэмдэг","Бусад"],xp:8},
+  {id:"B4",sec:"B",sl:"",q:"Ямар үйлчилгээг хамгийн их авдаг вэ? (Олон сонголт)",t:"multi",o:["Тос солих","Засвар","Сэлбэг","Борлуулалт","Кузов засвар","Оношлогоо"],xp:8},
+  {id:"B5",sec:"B",sl:"",q:"Манай хамгийн их мэддэг үйлчилгээ?",t:"single",o:["Агрегат засвар","Сэлбэг борлуулалт","Кузов засвар"],xp:8},
+  {id:"B6",sec:"B",sl:"",q:"Үйлчилгээний чанар?",t:"likert",xp:10},
+  {id:"B7",sec:"B",sl:"",q:"Үйлчилгээний хурд?",t:"likert",xp:10},
+  {id:"B8",sec:"B",sl:"",q:"Үйлчилгээний үнэ тариф?",t:"likert",xp:10},
+  {id:"B9",sec:"B",sl:"",q:"Засварчин, механик нарын мэдлэг, ур чадвар?",t:"likert",xp:10},
+  {id:"B10",sec:"B",sl:"",q:"Орчин нөхцөл, цэвэр байдал, тав тух?",t:"likert",xp:10},
+  {id:"B11",sec:"B",sl:"",q:"Ажилтнуудын (инженер, механик) харилцааны соёл?",t:"likert",xp:10},
+  {id:"B12",sec:"B",sl:"",q:"Ажилтнуудын (касс теллер) харилцааны соёл?",t:"likert",xp:10},
+  {id:"B13",sec:"B",sl:"",q:"Манай компанийг хэн нэгэнд санал болгох уу? (0–10)",t:"nps",xp:10},
+  {id:"C1",sec:"C",sl:"С хэсэг — Нээлттэй асуулт",q:"Манай үйлчилгээний ямар зүйл танд хамгийн их таалагдсан бэ?",t:"open",xp:15},
+  {id:"C2",sec:"C",sl:"",q:"Ямар зүйлийг сайжруулбал зохистой гэж бодож байна?",t:"open",xp:15},
+  {id:"C3",sec:"C",sl:"",q:"Бидэнтэй ажиллахаас өмнө ямар газраар үйлчлүүлж байсан бэ?",t:"open",xp:10},
+  {id:"C4",sec:"C",sl:"",q:"Цаашид ямар нэмэлт үйлчилгээ хэрэгтэй вэ?",t:"open",xp:10},
+  {id:"C5",sec:"C",sl:"",q:"Манай компанийн тухай нэг өгүүлбэрээр хэлбэл?",t:"open",xp:10}
+];
+
+var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbykDjXTvkNpU6Y1yZQ2gBsel4BXjnyGNc2YdL2d-C0fO3UFjjbz_CzD-4QlNBPbpxxh/exec";
+var cur = -1, ans = {}, xp = 0, msel = [];
+var tmsgs = ["⭐ Гайхалтай!","🎯 Зөв!","💪 Маш сайн!","🚀 Тэгж байгаа!","👏 Баярлалаа!"];
+
+function toast(msg) {
+  var t = document.getElementById("toast");
+  t.textContent = msg; t.classList.add("show");
+  setTimeout(function(){ t.classList.remove("show"); }, 2200);
+}
+
+function updProg() {
+  var pct = cur < 0 ? 0 : Math.round((cur / Q.length) * 100);
+  document.getElementById("pbar").style.width = pct + "%";
+  document.getElementById("plbl").textContent = cur < 0 ? "Эхлэл" : (cur + " / " + Q.length + " асуулт");
+  document.getElementById("xplbl").textContent = "⭐ " + xp + " оноо";
+}
+
+function showWelcome() {
+  document.getElementById("body").innerHTML =
+    '<div class="card" style="text-align:center;padding:2.5rem 1.75rem">' +
+    '<div style="font-size:52px;margin-bottom:1rem">👋</div>' +
+    '<p style="font-size:17px;font-weight:600;color:#111827;margin-bottom:0.5rem">Сайн байна уу!</p>' +
+    '<p style="font-size:14px;color:#4b5563;line-height:1.6;margin-bottom:0.25rem">Та <strong>Delta Auto Service</strong>-ийн судалгаанд оролцоход бэлэн боллоо.</p>' +
+    '<p style="font-size:13px;color:#6b7280;line-height:1.6;margin-bottom:1.75rem">Танд <strong>3 минут</strong> байхад л хангалттай!</p>' +
+    '<p style="font-size:16px;font-weight:600;color:#111827;margin-bottom:1.25rem">Бэлэн үү?</p>' +
+    '<button onclick="startSurvey()" style="background:#1a56db;color:#fff;border:none;border-radius:8px;padding:14px 48px;font-size:16px;font-weight:600;cursor:pointer;font-family:inherit">Бэлэн ✓</button>' +
+    '</div>';
+  updProg();
+}
+
+function startSurvey() {
+  cur = 0;
+  render();
+}
+
+function render() {
+  if (cur >= Q.length) {
+    showSummary();
+    return;
+  }
+  var q = Q[cur];
+  msel = [];
+  var h = "";
+  if (q.sl) h += '<div class="sec-badge">' + q.sl + '</div>';
+  h += '<div class="card"><div class="q-text">' + q.q + '</div>';
+
+  if (q.t === "single") {
+    h += '<div class="opts">';
+    for (var i = 0; i < q.o.length; i++) {
+      h += '<button class="opt" data-val="' + q.o[i] + '" onclick="pickS(this)">' + q.o[i] + '</button>';
+    }
+    h += '</div><div class="acts"><button class="btn-go" id="nb" disabled onclick="nextQ()">Үргэлжлүүлэх →</button></div>';
+  } else if (q.t === "multi") {
+    h += '<div class="opts">';
+    for (var i = 0; i < q.o.length; i++) {
+      h += '<button class="opt" data-val="' + q.o[i] + '" onclick="pickM(this)">' + q.o[i] + '</button>';
+    }
+    h += '</div><div class="acts"><button class="btn-go" id="nb" disabled onclick="nextQ()">Үргэлжлүүлэх →</button></div>';
+  } else if (q.t === "text") {
+    h += '<input type="text" id="ti" placeholder="Энд бичнэ үү..." oninput="checkTxt()">';
+    h += '<div class="acts"><button class="btn-go" id="nb" disabled onclick="nextQ()">Үргэлжлүүлэх →</button></div>';
+  } else if (q.t === "likert") {
+    h += '<div class="lk-row">';
+    for (var n = 1; n <= 5; n++) {
+      h += '<button class="lk" data-val="' + n + '" onclick="pickL(this)">' + n + '</button>';
+    }
+    h += '</div><div class="lk-lbl"><span>Маш муу</span><span>Маш сайн</span></div>';
+    h += '<div class="acts"><button class="btn-go" id="nb" disabled onclick="nextQ()">Үргэлжлүүлэх →</button></div>';
+  } else if (q.t === "nps") {
+    h += '<div class="nps-row">';
+    for (var n = 0; n <= 10; n++) {
+      h += '<button class="nps" data-val="' + n + '" onclick="pickN(this)">' + n + '</button>';
+    }
+    h += '</div><div class="nps-lbl"><span>Огт санал болгохгүй</span><span>Тодорхой санал болгоно</span></div>';
+    h += '<div class="acts"><button class="btn-go" id="nb" disabled onclick="nextQ()">Үргэлжлүүлэх →</button></div>';
+  } else if (q.t === "open") {
+    h += '<textarea id="oi" placeholder="Энд бичнэ үү..."></textarea>';
+    h += '<div class="acts"><button class="btn-go" id="nb" onclick="nextQ()">Үргэлжлүүлэх →</button></div>';
+  }
+  h += '</div>';
+  document.getElementById("body").innerHTML = h;
+  updProg();
+  window.scrollTo(0, 0);
+}
+
+function checkTxt() {
+  var el = document.getElementById("ti");
+  if (el) document.getElementById("nb").disabled = el.value.trim().length === 0;
+}
+
+function pickS(el) {
+  var btns = document.querySelectorAll(".opt");
+  for (var i = 0; i < btns.length; i++) btns[i].classList.remove("sel");
+  el.classList.add("sel");
+  ans[Q[cur].id] = el.getAttribute("data-val");
+  document.getElementById("nb").disabled = false;
+}
+
+function pickM(el) {
+  var val = el.getAttribute("data-val");
+  if (el.classList.contains("msel")) {
+    el.classList.remove("msel");
+    msel = msel.filter(function(v){ return v !== val; });
+  } else {
+    el.classList.add("msel");
+    msel.push(val);
+  }
+  ans[Q[cur].id] = msel.slice();
+  document.getElementById("nb").disabled = msel.length === 0;
+}
+
+function pickL(el) {
+  var btns = document.querySelectorAll(".lk");
+  for (var i = 0; i < btns.length; i++) btns[i].classList.remove("sel");
+  el.classList.add("sel");
+  ans[Q[cur].id] = parseInt(el.getAttribute("data-val"));
+  document.getElementById("nb").disabled = false;
+}
+
+function pickN(el) {
+  var btns = document.querySelectorAll(".nps");
+  for (var i = 0; i < btns.length; i++) btns[i].className = "nps";
+  var n = parseInt(el.getAttribute("data-val"));
+  el.classList.add(n >= 9 ? "sg" : n >= 7 ? "sa" : "sr");
+  ans[Q[cur].id] = n;
+  document.getElementById("nb").disabled = false;
+}
+
+function nextQ() {
+  var q = Q[cur];
+  if (q.t === "open") { var el = document.getElementById("oi"); if(el) ans[q.id] = el.value.trim(); }
+  if (q.t === "text") { var el = document.getElementById("ti"); if(el) ans[q.id] = el.value.trim(); }
+  xp += q.xp;
+  toast(tmsgs[Math.floor(Math.random()*tmsgs.length)] + " +" + q.xp);
+  cur++;
+
+  // B1 "Үгүй" бол постер + салют, дараа нь үр дүн
+  if (q.id === "B1" && ans["B1"] === "Үгүй") {
+    submitData(ans);
+    showPoster(function(){ showSummaryOnly(); });
+    return;
+  }
+
+  // Бүх асуулт дуусвал
+  if (cur >= Q.length) {
+    showSummary();
+    return;
+  }
+
+  render();
+}
+
+function showSummary() {
+  document.getElementById("pbar").style.width = "100%";
+  document.getElementById("plbl").textContent = "Дууслаа!";
+
+  var lids = ["B6","B7","B8","B9","B10","B11","B12"];
+  var llbls = {B6:"Чанар",B7:"Хурд",B8:"Үнэ тариф",B9:"Ур чадвар",B10:"Орчин",B11:"Харилцаа (инженер)",B12:"Харилцаа (касс)"};
+  var vl = lids.filter(function(id){ return ans[id] != null; });
+  var avg = vl.length ? (vl.reduce(function(s,id){ return s+ans[id]; },0)/vl.length).toFixed(2) : "—";
+  var nps = ans["B13"];
+  var npsTag = "—";
+  if (nps != null) {
+    var cls = nps>=9?"np":nps>=7?"na":"nd";
+    var lbl = nps>=9?"Дэмжигч":nps>=7?"Идэвхгүй":"Шүүмжлэгч";
+    npsTag = '<span class="nps-tag '+cls+'">'+lbl+' ('+nps+')</span>';
+  }
+  var lrows = lids.map(function(id){
+    if (ans[id]==null) return "";
+    var s="★".repeat(ans[id])+"☆".repeat(5-ans[id]);
+    return '<div class="sum-row"><span class="sum-k">'+llbls[id]+'</span><span class="sum-v">'+s+' ('+ans[id]+'/5)</span></div>';
+  }).join("");
+
+  var h = '<div class="card">' +
+    '<div class="sum-hdr"><div class="trophy">🏆</div><h2>Судалгаа амжилттай дууслаа!</h2>' +
+    '<p>Таны хариулт бидэнд маш чухал. Баярлалаа!</p>' +
+    '<div class="sum-xp">⭐ Нийт '+xp+' оноо цуглуулав</div></div>' +
+    '<div class="sum-sec"><div class="sum-sec-ttl">А хэсэг</div>' +
+    '<div class="sum-row"><span class="sum-k">Нас</span><span class="sum-v">'+(ans.A1||"—")+'</span></div>' +
+    '<div class="sum-row"><span class="sum-k">Хүйс</span><span class="sum-v">'+(ans.A2||"—")+'</span></div>' +
+    '<div class="sum-row"><span class="sum-k">Мэргэжил</span><span class="sum-v">'+(ans.A3||"—")+'</span></div>' +
+    '<div class="sum-row"><span class="sum-k">Албан тушаал</span><span class="sum-v">'+(ans.A4||"—")+'</span></div>' +
+    '<div class="sum-row"><span class="sum-k">Утас</span><span class="sum-v">'+(ans.A5||"—")+'</span></div>' +
+    '<div class="sum-row"><span class="sum-k">Орлого</span><span class="sum-v">'+(ans.A6||"—")+'</span></div>' +
+    '<div class="sum-row"><span class="sum-k">Байршил</span><span class="sum-v">'+(ans.A7||"—")+'</span></div>' +
+    '<div class="sum-row"><span class="sum-k">Машин</span><span class="sum-v">'+(ans.A8||"—")+'</span></div>' +
+    '<div class="sum-row"><span class="sum-k">Машины дугаар</span><span class="sum-v">'+(ans.A9||"—")+'</span></div>' +
+    '<div class="sum-row"><span class="sum-k">Насжилт</span><span class="sum-v">'+(ans.A10||"—")+'</span></div></div>' +
+    '<div class="sum-sec"><div class="sum-sec-ttl">В хэсэг</div>' +
+    '<div class="sum-row"><span class="sum-k">Үйлчлүүлсэн эсэх</span><span class="sum-v">'+(ans.B1||"—")+'</span></div>' +
+    '<div class="sum-row"><span class="sum-k">Үйлчилгээний жил</span><span class="sum-v">'+(ans.B2||"—")+'</span></div>' +
+    '<div class="sum-row"><span class="sum-k">Мэдэх арга</span><span class="sum-v">'+(Array.isArray(ans.B3)?ans.B3.join(", "):"—")+'</span></div>' +
+    '<div class="sum-row"><span class="sum-k">Авдаг үйлчилгээ</span><span class="sum-v">'+(Array.isArray(ans.B4)?ans.B4.join(", "):"—")+'</span></div>' +
+    lrows +
+    '<div class="sum-row"><span class="sum-k">Дундаж үнэлгээ</span><span class="sum-v"><span class="avg">'+avg+'</span> / 5.0</span></div>' +
+    '<div class="sum-row"><span class="sum-k">NPS</span><span class="sum-v">'+npsTag+'</span></div></div>' +
+    '<div class="sum-sec"><div class="sum-sec-ttl">С хэсэг</div>' +
+    '<div class="sum-row"><span class="sum-k">Давуу тал</span><span class="sum-v">'+(ans.C1||"—")+'</span></div>' +
+    '<div class="sum-row"><span class="sum-k">Сайжруулах</span><span class="sum-v">'+(ans.C2||"—")+'</span></div>' +
+    '<div class="sum-row"><span class="sum-k">Өрсөлдөгч</span><span class="sum-v">'+(ans.C3||"—")+'</span></div>' +
+    '<div class="sum-row"><span class="sum-k">Нэмэлт үйлчилгээ</span><span class="sum-v">'+(ans.C4||"—")+'</span></div>' +
+    '<div class="sum-row"><span class="sum-k">Брэнд санал</span><span class="sum-v">'+(ans.C5||"—")+'</span></div></div>' +
+    '</div>';
+
+  submitData(ans);
+  showPoster(function(){
+    document.getElementById("body").innerHTML = h;
+    window.scrollTo(0, 0);
+  });
+}
+
+function showPoster(afterFn) {
+  var overlay = document.createElement("div");
+  overlay.style.cssText = "position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.88);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:1.5rem";
+  overlay.innerHTML =
+    '<canvas id="confetti-canvas" style="position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:10000"></canvas>' +
+    '<div style="max-width:400px;width:100%;border-radius:16px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,0.5);position:relative;z-index:10001">' +
+    '<img src="poster.png" alt="Delta Service" style="width:100%;display:block">' +
+    '</div>' +
+    '<button id="close-poster-btn" style="margin-top:1.25rem;background:#fff;color:#111827;border:none;border-radius:8px;padding:12px 32px;font-size:15px;font-weight:600;cursor:pointer;z-index:10001;position:relative;font-family:inherit">Хаах ✕</button>';
+  document.body.appendChild(overlay);
+  document.getElementById("close-poster-btn").onclick = function() {
+    overlay.remove();
+    if (afterFn) afterFn();
+  };
+  setTimeout(startConfetti, 200);
+}
+
+function showSummaryOnly() {
+  document.getElementById("pbar").style.width = "100%";
+  document.getElementById("plbl").textContent = "Дууслаа!";
+  var h = '<div class="card">' +
+    '<div class="sum-hdr"><div class="trophy">🏆</div><h2>Судалгаа амжилттай дууслаа!</h2>' +
+    '<p>Таны хариулт бидэнд маш чухал. Баярлалаа!</p>' +
+    '<div class="sum-xp">⭐ Нийт '+xp+' оноо цуглуулав</div></div>' +
+    '<div class="sum-sec"><div class="sum-sec-ttl">А хэсэг</div>' +
+    '<div class="sum-row"><span class="sum-k">Нас</span><span class="sum-v">'+(ans.A1||"—")+'</span></div>' +
+    '<div class="sum-row"><span class="sum-k">Хүйс</span><span class="sum-v">'+(ans.A2||"—")+'</span></div>' +
+    '<div class="sum-row"><span class="sum-k">Мэргэжил</span><span class="sum-v">'+(ans.A3||"—")+'</span></div>' +
+    '<div class="sum-row"><span class="sum-k">Утас</span><span class="sum-v">'+(ans.A5||"—")+'</span></div>' +
+    '<div class="sum-row"><span class="sum-k">Орлого</span><span class="sum-v">'+(ans.A6||"—")+'</span></div>' +
+    '<div class="sum-row"><span class="sum-k">Байршил</span><span class="sum-v">'+(ans.A7||"—")+'</span></div>' +
+    '<div class="sum-row"><span class="sum-k">Машин</span><span class="sum-v">'+(ans.A8||"—")+'</span></div>' +
+    '</div></div>';
+  document.getElementById("body").innerHTML = h;
+  window.scrollTo(0, 0);
+}
+
+function startConfetti() {
+  var canvas = document.getElementById("confetti-canvas");
+  if (!canvas) return;
+  var ctx = canvas.getContext("2d");
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  var pieces = [];
+  var colors = ["#1a56db","#16a34a","#d97706","#dc2626","#7c3aed","#ec4899","#f59e0b","#fff"];
+  for (var i = 0; i < 200; i++) {
+    pieces.push({
+      x: Math.random() * canvas.width,
+      y: -10 - Math.random() * canvas.height * 0.5,
+      w: 6 + Math.random() * 8,
+      h: 4 + Math.random() * 6,
+      color: colors[Math.floor(Math.random()*colors.length)],
+      rot: Math.random() * 360,
+      vx: (Math.random()-0.5)*3,
+      vy: 2 + Math.random()*3,
+      vr: (Math.random()-0.5)*8
+    });
+  }
+  var frame = 0;
+  function draw() {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    pieces.forEach(function(p){
+      ctx.save();
+      ctx.translate(p.x+p.w/2, p.y+p.h/2);
+      ctx.rotate(p.rot*Math.PI/180);
+      ctx.fillStyle = p.color;
+      ctx.globalAlpha = 0.85;
+      ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);
+      ctx.restore();
+      p.x+=p.vx; p.y+=p.vy; p.rot+=p.vr;
+    });
+    frame++;
+    if (frame < 180) requestAnimationFrame(draw);
+    else ctx.clearRect(0,0,canvas.width,canvas.height);
+  }
+  draw();
+}
+
+function submitData(data) {
+  fetch(SCRIPT_URL, {
+    method: "POST", mode: "no-cors",
+    headers: {"Content-Type":"application/json"},
+    body: JSON.stringify(data)
+  }).catch(function(e){ console.log(e); });
+}
+
+showWelcome();
+</script>
+</body>
+</html>
